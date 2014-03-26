@@ -1,0 +1,95 @@
+<compositequiz>
+  <quizzes>
+    <quiz type="ChooseLetters_1504_2010-08-21_17-47-19_rev_6121">
+      <book><![CDATA[name of book]]></book>
+      <unit><![CDATA[number of unit]]></unit>
+      <page><![CDATA[number of page]]></page>
+      <exercise><![CDATA[number of exercise]]></exercise>
+      <copyright><![CDATA[]]></copyright>
+      <rubric><![CDATA[<b>Click and listen. Complete the words.</b>]]></rubric>
+      <questionGroup>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/brother.jpg" type="image" hintaudiopath="content/assets/audio/brother.mp3"/>
+            <item type="text"><![CDATA[br]]></item>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="2"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[ther]]></item>
+          </questionItems>
+        </question>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/mum.jpg" type="image" hintaudiopath="content/assets/audio/mum.mp3"/>
+            <item type="text"><![CDATA[m]]></item>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="1"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[m]]></item>
+          </questionItems>
+        </question>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/lunch.jpg" type="image" hintaudiopath="content/assets/audio/lunch.mp3"/>
+            <item type="text"><![CDATA[l]]></item>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="1"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[nch]]></item>
+          </questionItems>
+        </question>
+        <options>
+          <option optionid="1" type="text"><![CDATA[u]]></option>
+          <option optionid="2" type="text"><![CDATA[o]]></option>
+        </options>
+      </questionGroup>
+      <questionGroup>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/run.jpg" type="image" hintaudiopath="content/assets/audio/run.mp3"/>
+            <item type="text"><![CDATA[r]]></item>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="1"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[n]]></item>
+          </questionItems>
+        </question>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/one.jpg" type="image" hintaudiopath="content/assets/audio/one.mp3"/>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="2"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[ne]]></item>
+          </questionItems>
+        </question>
+        <question score="1">
+          <questionItems>
+            <item imagepath="content/assets/images/monkey.jpg" type="image" hintaudiopath="content/assets/audio/monkey.mp3"/>
+            <item type="text"><![CDATA[m]]></item>
+            <item type="lozenge">
+              <answers>
+                <answer answerid="2"/>
+              </answers>
+            </item>
+            <item type="text"><![CDATA[nkey]]></item>
+          </questionItems>
+        </question>
+        <options>
+          <option optionid="1" type="text"><![CDATA[u]]></option>
+          <option optionid="2" type="text"><![CDATA[o]]></option>
+        </options>
+      </questionGroup>
+    </quiz>
+  </quizzes>
+</compositequiz>
