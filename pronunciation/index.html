@@ -24,16 +24,16 @@
                <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
                <div class="word">
                   <span>{{question.questionItems.item[1].__cdata}}</span><span ng-class="{true: 'solution', false: 'empty'}[question.answerGiven]">{{question.givenAnswer}}</span><span>{{question.questionItems.item[3].__cdata}}</span>
-                  <span class="indicator" ng-if="$parent.answerChecked"><img ng-if="question.answerCorrect" src="content/shared_assets/images/correct.png"/><img ng-if="!question.answerCorrect" src="content/shared_assets/images/incorrect.png"/>
+                  <span class="indicator"><img ng-if="question.status == 'ANSWER_CORRECT'" src="content/shared_assets/images/correct.png"/><img ng-if="question.status == 'ANSWER_WRONG'" src="content/shared_assets/images/incorrect.png"/>
                </div>
             </div>
         </li>
       </ul>
       <div class="buttons">
-      	<button ng-disabled="notComplete" ng-click="checkAnswer();">Check Answers</button>
-      	<button ng-disabled="!tryAgainEnabled" ng-click="tryAgain();">Try again</button>
-      	<button ng-disabled="!offTheMark" ng-click="reset();">Reset</button>
-      	<button ng-disabled="!tryAgain" ng-click="tryAgain();">Restart</button>
+      	<button ng-disabled="!isComplete()" ng-click="checkAnswer();">Check Answers</button>
+      	<button ng-disabled="!someWrong()" ng-click="tryAgain();">Try again</button>
+      	<button ng-disabled="!isStarted()" ng-click="reset();">Reset</button>
+
       </div>
   </div>
 
