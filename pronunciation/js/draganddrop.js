@@ -27,28 +27,44 @@ angular.module("ngDragDrop",[])
                     var sendChannel = attrs.dragChannel || "defaultchannel";
                     e.dataTransfer.setData("Text", sendData);
                     $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
-
+                    //alert('dragstart');
                 });
 
-                element.bind("touchmove", function (e) {
+                // element.bind("touchstart", function (e) {
+                //     var sendData = angular.toJson(dragData);
+                //     var sendChannel = attrs.dragChannel || "defaultchannel";
+                //     e.dataTransfer.setData("Text", sendData);
+                //     $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
+                //     //alert("touchstart");
+
+                // });
+
+                element.bind("touchstart touchmove", function (e) {
                     var sendData = angular.toJson(dragData);
                     var sendChannel = attrs.dragChannel || "defaultchannel";
                     e.dataTransfer.setData("Text", sendData);
                     $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
-                    alert("touchmove");
-
-                });
-
-                element.bind("touchstart", function (e) {
-                    var sendData = angular.toJson(dragData);
-                    var sendChannel = attrs.dragChannel || "defaultchannel";
-                    e.dataTransfer.setData("Text", sendData);
-                    $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
-                    alert("touchstart");
-
+                    //alert("touchstart");
+                    e.preventDefault();
+                    var orig = e.originalEvent;
+                    var x = orig.changedTouches[0].pageX;
+                    var y = orig.changedTouches[0].pageY;
                 });
 
                 element.bind("dragend", function (e) {
+                    var sendChannel = attrs.dragChannel || "defaultchannel";
+                    $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
+                    if (e.dataTransfer && e.dataTransfer.dropEffect !== "none") {
+                        if (attrs.onDropSuccess) {
+                            var fn = $parse(attrs.onDropSuccess);
+                            scope.$apply(function () {
+                                fn(scope, {$event: e});
+                            });
+                        }
+                    }
+                });
+
+                element.bind("touchend", function (e) {
                     var sendChannel = attrs.dragChannel || "defaultchannel";
                     $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);
                     if (e.dataTransfer && e.dataTransfer.dropEffect !== "none") {

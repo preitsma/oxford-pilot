@@ -26,6 +26,8 @@ var AppController = function($scope,$sce,DataSource) {
     $scope.playing = false;
     $scope.GroupCounter = 0;
     $scope.questions = [];
+    $scope.options = [];
+    var optionsBackup;
     
     xmlTransform = function(data) {
         console.log("transform data");
@@ -42,9 +44,11 @@ var AppController = function($scope,$sce,DataSource) {
            question.givenAnswer = '     ';
            question.answerGiven = false;
            question.status = 'NO_ANSWER'
+           question.answer = null;
            console.log(question);
         });
         $scope.options = $scope.questionGroup.options.option;
+        optionsBackup = jQuery.extend(true, {}, $scope.options);
         $scope.questions = $scope.questionGroup.question;
         $scope.title = $sce.trustAsHtml(data.compositequiz.quizzes.quiz.rubric.__cdata);
         $scope.shownCounter = 0;
@@ -64,6 +68,13 @@ var AppController = function($scope,$sce,DataSource) {
     $scope.$on('ANGULAR_DRAG_START', function(e) {$scope.playClip("content/shared_assets/audio/click_high")});
     $scope.$on('ANGULAR_DRAG_END', function(e) {$scope.playClip("content/shared_assets/audio/drop")});
 
+    $scope.playClick = function(e) {
+        $scope.playClip("content/shared_assets/audio/click_high");
+    }
+
+    $scope.playDrop = function(e) {
+        $scope.playClip("content/shared_assets/audio/drop");
+    }
 
     $scope.playClip = function(src){
          if($scope.playing == false) {
@@ -77,16 +88,12 @@ var AppController = function($scope,$sce,DataSource) {
          }
     };
 
-    $scope.onDrop = function($event,$answer,$question){
-        $question.givenAnswer = $answer.__cdata;
-        $question.givenAnswerId = $answer._optionid;
-        $question.answerGiven = true;
-        $question.status = 'ANSWER_GIVEN'
-        angular.forEach($scope.questions, function(question) {
-           if(!question.answerGiven) $scope.notComplete = true;
-        });
-        console.log("$scope.notComplete:" + $scope.notComplete);   
-    };
+    // $scope.onDrop = function($event,$answer,$question){
+    //     $question.givenAnswer = $answer.__cdata;
+    //     $question.givenAnswerId = $answer._optionid;
+    //     $question.answerGiven = true;
+    //     $question.status = 'ANSWER_GIVEN'
+    // };
 
     $scope.tryAgain = function() {
          angular.forEach($scope.questions, function(question) {
@@ -166,6 +173,18 @@ var AppController = function($scope,$sce,DataSource) {
            }
         });
         return ret;
+    }
+
+    $scope.onDrop = function(e, b, index) {
+        //restore the options
+        $scope.options = jQuery.extend(true, {}, optionsBackup);
+
+        $scope.playDrop();
+        question = $scope.questions[index];
+        question.givenAnswer = question.answer.__cdata;
+        question.givenAnswerId = question.answer._optionid;
+        question.answerGiven = true;
+        question.status = 'ANSWER_GIVEN';
     }
 
     DataSource.get(SOURCE_FILE,setData,xmlTransform);
