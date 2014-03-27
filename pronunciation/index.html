@@ -24,7 +24,7 @@
   	 </ul>
      <ul>
         <li ng-repeat="question in questions">
-           <div class="questionWrapper" ng-click="playSound(question.sound)" data-drop="true" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
+           <div class="questionWrapper" ng-click="playSound(question.sound)" data-drop="question.status!='ANSWER_SHOWN' && question.status!='ANSWER_CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
 
            	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SHOWN' || question.status=='ANSWER_CORRECT']">
                    <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
