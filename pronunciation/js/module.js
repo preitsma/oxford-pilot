@@ -25,12 +25,13 @@ var AppController = function($scope,$sce,DataSource) {
 
     $scope.playing = false;
     $scope.GroupCounter = 0;
+    $scope.questions = [];
     
     xmlTransform = function(data) {
         console.log("transform data");
         var x2js = new X2JS();
         var json = x2js.xml_str2json( data );
-        console.log(json.compositequiz.quizzes.quiz.questionGroup[0]);
+        //console.log(json.compositequiz.quizzes.quiz.questionGroup[0]);
         return json;
     };
     
@@ -44,11 +45,21 @@ var AppController = function($scope,$sce,DataSource) {
            console.log(question);
         });
         $scope.options = $scope.questionGroup.options.option;
+        $scope.questions = $scope.questionGroup.question;
         $scope.title = $sce.trustAsHtml(data.compositequiz.quizzes.quiz.rubric.__cdata);
         $scope.shownCounter = 0;
     };
 
-    DataSource.get(SOURCE_FILE,setData,xmlTransform);
+    getAnswerId = function(question) {
+        answerId = 0;
+        angular.forEach(question.questionItems.item, function(item) {
+            if(item._type == 'lozenge') {
+               answerId = item.answers.answer._answerid
+            } 
+        });
+        return answerId;
+    }
+
 
     $scope.$on('ANGULAR_DRAG_START', function(e) {$scope.playClip("content/shared_assets/audio/click_high")});
     $scope.$on('ANGULAR_DRAG_END', function(e) {$scope.playClip("content/shared_assets/audio/drop")});
@@ -71,40 +82,32 @@ var AppController = function($scope,$sce,DataSource) {
         $question.givenAnswerId = $answer._optionid;
         $question.answerGiven = true;
         $question.status = 'ANSWER_GIVEN'
-        console.log($question); 
-        //$scope.notComplete = false;
-        angular.forEach($scope.questionGroup.question, function(question) {
+        angular.forEach($scope.questions, function(question) {
            if(!question.answerGiven) $scope.notComplete = true;
         });
         console.log("$scope.notComplete:" + $scope.notComplete);   
     };
 
     $scope.tryAgain = function() {
-        //unset false answers
-         console.log('unsetting anwer');
-         angular.forEach($scope.questionGroup.question, function(question) {
-           if (!question.answerCorrect) {
-                console.log('unsetting anwer');
+         angular.forEach($scope.questions, function(question) {
+           if ( question.status == 'ANSWER_WRONG') {
                 question.givenAnswer = '     ';
                 question.givenAnswerId = 0;
                 question.answerGiven = false;
                 question.status = 'NO_ANSWER';
-                //$scope.notComplete = true;
            }
         });
-         console.log($scope.questionGroup);
     }
 
     $scope.checkAnswer = function() {
         allCorrect = true;
-        angular.forEach($scope.questionGroup.question, function(question) {
-           question.answerCorrect = (question.givenAnswerId == question.questionItems.item[2].answers.answer._answerid);
-           if (question.givenAnswerId == question.questionItems.item[2].answers.answer._answerid) {
+        angular.forEach($scope.questions, function(question) {
+            if ( question.givenAnswerId == getAnswerId(question) ) {
                question.status = 'ANSWER_CORRECT';
            } else {
                question.status = 'ANSWER_WRONG';
-           }
-           allCorrect = allCorrect && question.answerCorrect ;      
+               allCorrect = false;
+           }     
         });
         if (allCorrect) {
             $scope.playClip("content/shared_assets/audio/applause")
@@ -120,8 +123,7 @@ var AppController = function($scope,$sce,DataSource) {
     }
 
     $scope.showNextAnswer = function() {
-        question = $scope.questionGroup.question[$scope.shownCounter];
-        console.log(question);
+        question = $scope.questions[$scope.shownCounter];
         angular.forEach($scope.options, function(option) {
              if (question.questionItems.item[2].answers.answer._answerid == option._optionid) {
                 question.givenAnswer = option.__cdata;
@@ -134,7 +136,7 @@ var AppController = function($scope,$sce,DataSource) {
 
     $scope.isComplete = function() { //all answers are given or correct
         ret = true;
-        angular.forEach($scope.questionGroup.question, function(question) {
+        angular.forEach($scope.questions, function(question) {
            if (question.status != 'ANSWER_GIVEN' && question.status != 'ANSWER_CORRECT' && question.status != 'ANSWER_SHOWN') {
              ret = false;
            }
@@ -148,7 +150,7 @@ var AppController = function($scope,$sce,DataSource) {
 
     $scope.isStarted = function() { //at least one answer is given
         ret = false;
-        angular.forEach($scope.questionGroup.question, function(question) {
+        angular.forEach($scope.questions, function(question) {
            if (question.answerGiven == true) {
              ret = true
            }
@@ -158,7 +160,7 @@ var AppController = function($scope,$sce,DataSource) {
 
     $scope.someWrong = function() { //at least one wrong
         ret = false;
-        angular.forEach($scope.questionGroup.question, function(question) {
+        angular.forEach($scope.questions, function(question) {
            if (question.status == 'ANSWER_WRONG') {
              ret = true
            }
@@ -166,6 +168,6 @@ var AppController = function($scope,$sce,DataSource) {
         return ret;
     }
 
+    DataSource.get(SOURCE_FILE,setData,xmlTransform);
 
-    
 };

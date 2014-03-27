@@ -30,6 +30,24 @@ angular.module("ngDragDrop",[])
 
                 });
 
+                element.bind("touchmove", function (e) {
+                    var sendData = angular.toJson(dragData);
+                    var sendChannel = attrs.dragChannel || "defaultchannel";
+                    e.dataTransfer.setData("Text", sendData);
+                    $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
+                    alert("touchmove");
+
+                });
+
+                element.bind("touchstart", function (e) {
+                    var sendData = angular.toJson(dragData);
+                    var sendChannel = attrs.dragChannel || "defaultchannel";
+                    e.dataTransfer.setData("Text", sendData);
+                    $rootScope.$broadcast("ANGULAR_DRAG_START", sendChannel);
+                    alert("touchstart");
+
+                });
+
                 element.bind("dragend", function (e) {
                     var sendChannel = attrs.dragChannel || "defaultchannel";
                     $rootScope.$broadcast("ANGULAR_DRAG_END", sendChannel);

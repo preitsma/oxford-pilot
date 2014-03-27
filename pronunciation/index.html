@@ -19,17 +19,17 @@
         <li ng-repeat="option in options"  ui-draggable="true"  drag="option">{{option.__cdata}}</li>
   	 </ul>
      <ul>
-        <li ng-repeat="question in questionGroup.question" ui-on-Drop="onDrop($event,$data,question)">
+        <li ng-repeat="question in questions" ui-on-Drop="onDrop($event,$data,question)">
            <div class="questionWrapper" ng-click="playClip(question.questionItems.item[0]._hintaudiopath)" >
                <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
-               <div class="word">
-                  
-                  <span>{{question.questionItems.item[1].__cdata}}</span>
-                  <span ng-class="{true: 'solution', false: 'empty'}[question.answerGiven]">{{question.givenAnswer}}</span>
-                  <span>{{question.questionItems.item[3].__cdata}}</span>
-                  
-                  <span class="indicator"><img ng-if="question.status == 'ANSWER_CORRECT'" src="content/shared_assets/images/correct.png"/><img ng-if="question.status == 'ANSWER_WRONG'" src="content/shared_assets/images/incorrect.png"/>
+               <div class="word"> 
+           	   
+	           	   <span ng-repeat="item in question.questionItems.item" ng-switch="item._type">      <span ng-switch-when="text">{{item.__cdata}}</span>
+	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.answerGiven]">{{$parent.question.givenAnswer}}</span>
+	                     <span ng-if="$last" class="indicator"><img ng-show="question.status == 'ANSWER_CORRECT'" ng-class="icon" src="content/shared_assets/images/correct.png"/><img ng-show="question.status == 'ANSWER_WRONG'" ng-class="icon" src="content/shared_assets/images/incorrect.png"/></span>
+	               </span>
                </div>
+              
             </div>
         </li>
       </ul>
