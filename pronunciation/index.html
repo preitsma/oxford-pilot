@@ -20,11 +20,11 @@
   <div ng-controller="AppController" class="container" id="app-container">
   	 <h1 ng-bind-html="title"></h1>
   	  <ul class="letters">
-        <li ng-repeat="option in options" data-drag="true" jqyoui-draggable="{onStart: 'playClickHigh', placehoder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
+        <li ng-repeat="option in options" data-drag="true" jqyoui-draggable="{onStart: 'playFile(\'click_high\')', placehoder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
   	 </ul>
      <ul>
         <li ng-repeat="question in questions">
-           <div class="questionWrapper" ng-click="playClip(question.questionItems.item[0]._hintaudiopath)" data-drop="true" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
+           <div class="questionWrapper" ng-click="playSound(question.sound)" data-drop="true" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
 
            	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SHOWN' || question.status=='ANSWER_CORRECT']">
                    <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
@@ -48,8 +48,8 @@
 	        <button ng-disabled="!finished" ng-click="restart();">Restart</button>
         </div>
         <div class="right">
-	        <button ng-disabled="shownCounter >= questions.length" ng-click="playLowClick();seeNextAnswer();">See next answer</button>
-	        <button ng-disabled="shownCounter >= questions.length" ng-click="playLowClick();seeAllAnswers();">See all answers</button>
+	        <button ng-disabled="shownCounter >= questions.length" ng-click="playFile(null,null,'click_low');seeNextAnswer();">See next answer</button>
+	        <button ng-disabled="shownCounter >= questions.length" ng-click="playFile(null,null,'click_low');seeAllAnswers();">See all answers</button>
         </div>
       </div>
   </div>

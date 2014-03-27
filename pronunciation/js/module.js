@@ -30,7 +30,25 @@ var AppController = function($scope,$sce,$timeout,DataSource) {
     $scope.maxGroups = 0;
     $scope.finished = false;
     var optionsBackup;
+    buzz.defaults.preload = 'auto';
 
+    $scope.sounds = [];
+
+    initSound = function(name) {
+        $scope.sounds[name] = new buzz.sound('content/shared_assets/audio/' + name, {
+                    formats: [ "ogg", "mp3"]
+                  })
+                  .bind("ended", function(e) { $scope.playing = false; })
+                  .load();
+    }
+ 
+    initSound('applause');
+    initSound('click_high');
+    initSound('click_low');
+    initSound('drop');
+    initSound('wrong');
+
+       console.log($scope.sounds['click_low']);
 
     
     xmlTransform = function(data) {
@@ -46,10 +64,13 @@ var AppController = function($scope,$sce,$timeout,DataSource) {
         $scope.maxGroups = data.compositequiz.quizzes.quiz.questionGroup.length;
         console.log($scope.maxGroups);
         angular.forEach($scope.questionGroup.question, function(question) {
-           //question.givenAnswer = '     ';
            question.answerGiven = false;
-           question.status = 'NO_ANSWER'
-           //question.answer = null;
+           question.status = 'NO_ANSWER';
+           question.sound = new buzz.sound(question.questionItems.item[0]._hintaudiopath.replace(/\.[^/.]+$/, ""), {
+                    formats: [ "ogg", "mp3"]
+                  })
+                  .bind("ended", function(e) { $scope.playing = false; })
+                  .load();
            console.log(question);
         });
         $scope.options = $scope.questionGroup.options.option;
@@ -86,39 +107,23 @@ var AppController = function($scope,$sce,$timeout,DataSource) {
         return retOption;
     }
 
-
-    $scope.$on('ANGULAR_DRAG_START', function(e) {$scope.playClip("content/shared_assets/audio/click_high")});
-    $scope.$on('ANGULAR_DRAG_END', function(e) {$scope.playClip("content/shared_assets/audio/drop")});
-
-    $scope.playHighClick = function(e) {
-        $scope.playClip("content/shared_assets/audio/click_high");
+    $scope.playFile = function(a,b,name) {
+        console.log($scope.sounds[name]);
+        $scope.playSound($scope.sounds[name]);
     }
 
-    $scope.playLowClick = function(e) {
-        $scope.playClip("content/shared_assets/audio/click_low");
+    $scope.playSound = function(sound) {
+       if ($scope.playing == false) {
+          $scope.playing = true;  
+          sound.play();
+       }
     }
-
-    $scope.playDrop = function(e) {
-        $scope.playClip("content/shared_assets/audio/drop");
-    }
-
-    $scope.playClip = function(src){
-         if($scope.playing == false) {
-                  var mySound = new buzz.sound(src.replace(/\.[^/.]+$/, ""), {
-                    formats: [ "ogg", "mp3"]
-                  });
-                  mySound.bind("ended", function(e) { $scope.playing = false; });
-                  mySound.load();
-                  mySound.play();
-                  $scope.playing = true;
-         }
-    };
 
     $scope.onDrop = function(e, b, index) {
         //restore the options
         $scope.options = jQuery.extend(true, {}, optionsBackup);
 
-        $scope.playDrop();
+        $scope.playFile(null,null,'drop');
         question = $scope.questions[index];
         question.answerGiven = true;
         question.status = 'ANSWER_GIVEN';
@@ -146,10 +151,10 @@ var AppController = function($scope,$sce,$timeout,DataSource) {
            }     
         });
         if (allCorrect) {
-            $scope.playClip("content/shared_assets/audio/applause")
+            $scope.playFile(null,null,"applause");
             $scope.skipNext();
         } else {
-            $scope.playClip("content/shared_assets/audio/wrong")
+            $scope.playFile(null,null,"wrong");
         }
     };
 
