@@ -77,7 +77,7 @@ ul.item li {
 
 .container {
     margin-left: 20px;
-    width: auto;
+    max-width:  1000px;
 }
 
 .questionWrapper {
@@ -110,6 +110,15 @@ ul.item li {
     clear:both;
 }
 
+.img-wrap {
+        display: inline-block;
+        line-height: 0;
+}
+
+.img-wrap > img {
+    opacity: 0.5; 
+}
+
 .solution {
     padding: 2px;
     display: inline-block;
@@ -132,5 +141,18 @@ ul.item li {
 }
 
 .buttons {
+   padding: 20px;
    clear:both; 
+}
+
+button {
+    font-size: 16px;
+}
+
+.left {
+   float:left; 
+}
+
+.right {
+   float:right; 
 }

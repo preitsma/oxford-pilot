@@ -20,16 +20,20 @@
   <div ng-controller="AppController" class="container" id="app-container">
   	 <h1 ng-bind-html="title"></h1>
   	  <ul class="letters">
-        <li ng-repeat="option in options" data-drag="true" jqyoui-draggable="{onStart: 'playClick', placehoder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
+        <li ng-repeat="option in options" data-drag="true" jqyoui-draggable="{onStart: 'playClickHigh', placehoder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
   	 </ul>
      <ul>
         <li ng-repeat="question in questions">
-           <div class="questionWrapper" ng-click="playClip(question.questionItems.item[0]._hintaudiopath)" data-drop="true" ng-model="question.answer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
-               <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
+           <div class="questionWrapper" ng-click="playClip(question.questionItems.item[0]._hintaudiopath)" data-drop="true" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
+
+           	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SHOWN' || question.status=='ANSWER_CORRECT']">
+                   <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
+                   {{$parent.question.status}}
+               </div>
                <div class="word"> 
            	   
 	           	   <span ng-repeat="item in question.questionItems.item" ng-switch="item._type">      <span ng-switch-when="text">{{item.__cdata}}</span>
-	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.answerGiven]">{{$parent.question.givenAnswer}}</span>
+	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.answerGiven]">{{$parent.question.givenAnswer.__cdata}}</span>
 	                     <span ng-if="$last" class="indicator"><img ng-show="question.status == 'ANSWER_CORRECT'" ng-class="icon" src="content/shared_assets/images/correct.png"/><img ng-show="question.status == 'ANSWER_WRONG'" ng-class="icon" src="content/shared_assets/images/incorrect.png"/></span>
 	               </span>
                </div>
@@ -37,11 +41,16 @@
         </li>
       </ul>
       <div class="buttons">
-      	<button ng-disabled="!isComplete()" ng-click="checkAnswer();">Check Answers</button>
-      	<button ng-disabled="!someWrong()" ng-click="tryAgain();">Try again</button>
-      	<button ng-disabled="!isStarted()" ng-click="reset();">Reset</button>
-        |
-        <button ng-disabled="" ng-click="showNextAnswer();">See next answer</button>
+      	<div class="left">
+	      	<button ng-disabled="!isComplete() || finished " ng-click="checkAnswer();">Check Answers</button>
+	      	<button ng-disabled="!someWrong() || finished " ng-click="tryAgain();">Try again</button>
+	      	<button ng-disabled="!isStarted() || finished " ng-click="reset();">Reset</button>
+	        <button ng-disabled="!finished" ng-click="restart();">Restart</button>
+        </div>
+        <div class="right">
+	        <button ng-disabled="shownCounter >= questions.length" ng-click="playLowClick();seeNextAnswer();">See next answer</button>
+	        <button ng-disabled="shownCounter >= questions.length" ng-click="playLowClick();seeAllAnswers();">See all answers</button>
+        </div>
       </div>
   </div>
 
