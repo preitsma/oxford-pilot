@@ -195,11 +195,15 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.isComplete = function() { //all answers are filled in but not all shown
         ret = true;
         angular.forEach($scope.questions, function(question) {
-           if (question.status == 'EMPTY' || question.status == 'CORRECT' || question.status == 'WRONG') {
+           if (question.status == 'EMPTY') {
                 ret = false;
            }
         });
-        return ret && ($scope.shownCounter != $scope.questions.length);
+        if (ret == true) {
+            return $scope.shownCounter != $scope.questions.length;
+        } else {
+            return false;
+        }
     }
 
     $scope.isStarted = function() { //at least one answer is given
