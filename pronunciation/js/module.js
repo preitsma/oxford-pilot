@@ -125,6 +125,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.tryAgain = function() {
          angular.forEach($scope.questions, function(question) {
            if ( question.status == 'ANSWER_WRONG') {
+                question.givenAnswer = null;
                 question.status = 'NO_ANSWER';
            }
         });
