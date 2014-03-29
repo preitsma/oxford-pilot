@@ -76,7 +76,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
         $scope.questions = $scope.questionGroup.question;
  
         angular.forEach($scope.questions, function(question) {
-           question.status = 'NO_ANSWER';
+           question.status = 'EMPTY';
            question.sound = initSound(question.questionItems.item[0]._hintaudiopath);
         });
 
@@ -124,9 +124,9 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
 
     $scope.tryAgain = function() {
          angular.forEach($scope.questions, function(question) {
-           if ( question.status == 'ANSWER_WRONG') {
+           if ( question.status == 'WRONG') {
                 question.givenAnswer = null;
-                question.status = 'NO_ANSWER';
+                question.status = 'EMPTY';
            }
         });
     }
@@ -134,11 +134,11 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.checkAnswer = function() {
         allCorrect = true;
         angular.forEach($scope.questions, function(question) {
-           if (question.status != 'ANSWER_SEEN') {
+           if (question.status != 'SEEN') {
                if (question.givenAnswer._optionid == getCorrectOption(question)._optionid) {
-                   question.status = 'ANSWER_CORRECT';
+                   question.status = 'CORRECT';
                } else {
-                   question.status = 'ANSWER_WRONG';
+                   question.status = 'WRONG';
                    allCorrect = false;
                }
             }     
@@ -176,7 +176,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.seeNextAnswer = function() {
         question = $scope.questions[$scope.shownCounter];
         question.givenAnswer = getCorrectOption(question);
-        question.status = 'ANSWER_SEEN';       
+        question.status = 'SEEN';       
         $scope.shownCounter++;
         if ($scope.shownCounter == $scope.questions.length) {
             $scope.skipNext();
@@ -187,7 +187,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
         $scope.shownCounter = $scope.questions.length;
         angular.forEach($scope.questions, function(question) {
             question.givenAnswer = getCorrectOption(question);
-            question.status = 'ANSWER_SEEN';  
+            question.status = 'SEEN';  
         });
         $scope.skipNext();
     }
@@ -195,7 +195,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.isComplete = function() { //all answers are filled in but not all shown
         ret = true;
         angular.forEach($scope.questions, function(question) {
-           if (question.status == 'NO_ANSWER') {
+           if (question.status == 'EMPTY' || question.status == 'CORRECT' || question.status == 'WRONG') {
                 ret = false;
            }
         });
@@ -205,7 +205,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.isStarted = function() { //at least one answer is given
         ret = false;
         angular.forEach($scope.questions, function(question) {
-           if (question.status != 'NO_ANSWER') {
+           if (question.status != 'EMPTY') {
                 ret = true
            }
         });
@@ -215,7 +215,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.someWrong = function() { //at least one answer is wrong
         ret = false;
         angular.forEach($scope.questions, function(question) {
-           if (question.status == 'ANSWER_WRONG') {
+           if (question.status == 'WRONG') {
                 ret = true
            }
         });
