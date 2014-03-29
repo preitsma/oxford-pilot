@@ -22,6 +22,7 @@
   	  <ul class="letters">
         <li ng-repeat="option in options" data-drag="true" ng-mousedown="playFile(null,null,'click_high')" jqyoui-draggable="{placeholder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
   	 </ul>
+  	 <div class="question">
      <ul>
         <li ng-repeat="question in questions">
            <div class="questionWrapper" ng-mousedown="playSound(question.sound)" data-drop="question.status!='SEEN' && question.status!='CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
@@ -40,6 +41,7 @@
             </div>
         </li>
       </ul>
+      <div>
       <div class="buttons">
       	<div class="left">
 	      	<button ng-disabled="!isComplete() || finished " ng-click="checkAnswer();">Check Answers</button>
