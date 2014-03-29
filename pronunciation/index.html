@@ -25,9 +25,9 @@
   	 <div class="question">
      <ul>
         <li ng-repeat="question in questions">
-           <div class="questionWrapper" ng-mousedown="playSound(question.sound)" data-drop="question.status!='SEEN' && question.status!='CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
+           <div class="questionWrapper" ng-mousedown="playSound(question.sound)" data-drop="question.status!='SEEN' && question.status!='CORRECT' && question.status!='WRONG'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
 
-           	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='SEEN' || question.status=='CORRECT']">
+           	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='SEEN' || question.status=='CORRECT' || question.status=='WRONG']">
                    <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage" unselectable="on"/>
                    {{$parent.question.status}}
                </div>
@@ -45,9 +45,13 @@
       <div class="buttons">
       	<div class="left">
 	      	<button ng-disabled="!isComplete() || finished " ng-click="checkAnswer();">Check Answers</button>
+
 	      	<button ng-disabled="!someWrong() || finished " ng-click="tryAgain();">Try again</button>
 	      	<button ng-disabled="!isStarted() || finished " ng-click="init();">Reset</button>
 	        <button ng-disabled="!finished" ng-click="restart();">Restart</button>
+        </div>
+        <div class="score">
+          <span ng-if="finished">Score:{{score}}/{{totalPoints}}</span>
         </div>
         <div class="right">
 	        <button ng-disabled="shownCounter >= questions.length" ng-click="playFile(null,null,'click_low');seeNextAnswer();">See next answer</button>

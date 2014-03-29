@@ -40,10 +40,14 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.options = [];
     $scope.maxGroups = 0;
     $scope.finished = false;
+    $scope.numerOfE
 
     var optionsBackup;
 
     $scope.sounds = [];
+    $scope.firstTimeRights = [];
+    $scope.score = 0;
+    $scope.totalPoints = 0;
 
     initSound = function(fileName) {
         return new buzz.sound(fileName.replace(/\.[^/.]+$/, ""), {
@@ -103,6 +107,19 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
         return retOption;
     }
 
+    updateScore = function(question, key) {
+        questionId = key + $scope.groupCounter*$scope.questions.length;        
+        if (typeof $scope.firstTimeRights[questionId] == 'undefined') {
+            if(question.status == 'CORRECT') {
+                $scope.score = $scope.score + parseInt(question._score);
+            }
+            $scope.totalPoints = $scope.totalPoints + parseInt(question._score);
+            $scope.firstTimeRights[questionId] = question.status; 
+        } else {
+           $scope.firstTimeRights[questionId] = question.status; 
+        }
+    };
+
     $scope.playFile = function(a,b,name) {
         $scope.playSound($scope.sounds[name]);
     }
@@ -124,7 +141,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
 
     $scope.tryAgain = function() {
          angular.forEach($scope.questions, function(question) {
-           if ( question.status == 'WRONG') {
+           if ( question.status == 'WRONG' ) {
                 question.givenAnswer = null;
                 question.status = 'EMPTY';
            }
@@ -133,15 +150,16 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
 
     $scope.checkAnswer = function() {
         allCorrect = true;
-        angular.forEach($scope.questions, function(question) {
-           if (question.status != 'SEEN') {
+        angular.forEach($scope.questions, function(question, key) {
+            if (question.status != 'SEEN') {
                if (question.givenAnswer._optionid == getCorrectOption(question)._optionid) {
-                   question.status = 'CORRECT';
+                   question.status = 'CORRECT';    
                } else {
                    question.status = 'WRONG';
                    allCorrect = false;
                }
-            }     
+            } 
+            updateScore(question, key);            
         });
         if (allCorrect) {
             $scope.playFile(null,null,"applause");
@@ -157,7 +175,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
            $timeout(function(e) {
              $scope.groupCounter++;
              $scope.init();
-          }, 3000);
+          }, 1800);
         } else {
            $scope.finished = true;
         }
@@ -170,13 +188,17 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.restart = function() {
         $scope.groupCounter = 0;
         $scope.finished = false;
+        $scope.firstTimeRights = [];
+        $scope.score = 0;
+        $scope.totalPoints = 0;
         $scope.init();
     }
 
     $scope.seeNextAnswer = function() {
         question = $scope.questions[$scope.shownCounter];
         question.givenAnswer = getCorrectOption(question);
-        question.status = 'SEEN';       
+        question.status = 'SEEN'; 
+        updateScore(question, $scope.shownCounter);      
         $scope.shownCounter++;
         if ($scope.shownCounter == $scope.questions.length) {
             $scope.skipNext();
@@ -184,10 +206,11 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     }
 
     $scope.seeAllAnswers = function() {
-        $scope.shownCounter = $scope.questions.length;
-        angular.forEach($scope.questions, function(question) {
+        angular.forEach($scope.questions, function(question, key) {
             question.givenAnswer = getCorrectOption(question);
             question.status = 'SEEN';  
+            updateScore(question, $scope.shownCounter);
+            $scope.shownCounter++;
         });
         $scope.skipNext();
     }
