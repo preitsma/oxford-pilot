@@ -17,7 +17,6 @@ angular.module('myApp.service',[]).
                     {transformResponse:transform}
                 ).
                 success(function(data, status) {
-                    console.log(status);
                     callback(data);
                 }).
                 error(function(data, status) {
@@ -170,7 +169,6 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     };
 
     $scope.skipNext = function() {
-        console.log($scope.groupCounter + ' ' + $scope.maxGroups);
         if ($scope.groupCounter < $scope.maxGroups-1) {
            $timeout(function(e) {
              $scope.groupCounter++;
