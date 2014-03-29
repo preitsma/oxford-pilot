@@ -1,3 +1,6 @@
+window.console = window.console || {};
+window.console.log = window.console.log || function() {};
+
 angular.module('myApp.service',[]).
     factory('DataSource', ['$http',function($http){
        return {
@@ -7,11 +10,10 @@ angular.module('myApp.service',[]).
                     {transformResponse:transform}
                 ).
                 success(function(data, status) {
-                    console.log("Request succeeded");
                     callback(data);
                 }).
                 error(function(data, status) {
-                    console.log("Request failed " + status);
+                    alert('');
                 });
            }
        };
@@ -30,7 +32,6 @@ var AppController = function($scope,$sce,$timeout,DataSource) {
     $scope.maxGroups = 0;
     $scope.finished = false;
     var optionsBackup;
-    buzz.defaults.preload = 'auto';
 
     $scope.sounds = [];
 

@@ -2,15 +2,16 @@
 <html ng-app="myApp">
 
 <head>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-  
     <script src="js/angular.min.js"></script>
     <script src="js/xml2json.js"></script>
-    <script src="js/module.js"></script>
     <script src="js/buzz.min.js"></script>
     <script src="js/angular-dragdrop.min.js"></script>
     <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/module.js"></script>
+  
     
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -27,14 +28,14 @@
            <div class="questionWrapper" ng-click="playSound(question.sound)" data-drop="question.status!='ANSWER_SHOWN' && question.status!='ANSWER_CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
 
            	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SHOWN' || question.status=='ANSWER_CORRECT']">
-                   <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage"/>
+                   <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage" unselectable="on"/>
                    {{$parent.question.status}}
                </div>
                <div class="word"> 
            	   
 	           	   <span ng-repeat="item in question.questionItems.item" ng-switch="item._type">      <span ng-switch-when="text">{{item.__cdata}}</span>
 	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.answerGiven]">{{$parent.question.givenAnswer.__cdata}}</span>
-	                     <span ng-if="$last" class="indicator"><img ng-show="question.status == 'ANSWER_CORRECT'" ng-class="icon" src="content/shared_assets/images/correct.png"/><img ng-show="question.status == 'ANSWER_WRONG'" ng-class="icon" src="content/shared_assets/images/incorrect.png"/></span>
+	                     <span ng-if="$last" class="indicator"><img src="content/shared_assets/images/empty.png"/><img ng-show="question.status == 'ANSWER_CORRECT'" ng-class="icon" src="content/shared_assets/images/correct.png"/><img ng-show="question.status == 'ANSWER_WRONG'" ng-class="icon" src="content/shared_assets/images/incorrect.png"/></span>
 	               </span>
                </div>
             </div>
