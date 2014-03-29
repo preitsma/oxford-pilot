@@ -12,7 +12,6 @@
     <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/module.js"></script>
   
-    
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -21,20 +20,20 @@
   <div ng-controller="AppController" class="container" id="app-container">
   	 <h1 ng-bind-html="title"></h1>
   	  <ul class="letters">
-        <li ng-repeat="option in options" data-drag="true" jqyoui-draggable="{onStart: 'playFile(\'click_high\')', placehoder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
+        <li ng-repeat="option in options" data-drag="true" ng-mousedown="playFile(null,null,'click_high')" jqyoui-draggable="{placeholder: 'keep', index:{{$index}}}" data-jqyoui-options="{revert:'invalid',helper:'clone'}" ng-model="option">{{option.__cdata}}</li>
   	 </ul>
      <ul>
         <li ng-repeat="question in questions">
-           <div class="questionWrapper" ng-click="playSound(question.sound)" data-drop="question.status!='ANSWER_SHOWN' && question.status!='ANSWER_CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
+           <div class="questionWrapper" ng-mousedown="playSound(question.sound)" data-drop="question.status!='ANSWER_SEEN' && question.status!='ANSWER_CORRECT'" ng-model="question.givenAnswer" data-jqyoui-options jqyoui-droppable="{onDrop:'onDrop({{$index}})'}">
 
-           	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SHOWN' || question.status=='ANSWER_CORRECT']">
+           	   <div ng-class="{true: 'img-wrap', false: ''}[question.status=='ANSWER_SEEN' || question.status=='ANSWER_CORRECT']">
                    <img ng-src="{{question.questionItems.item[0]._imagepath}}" class="pronImage" unselectable="on"/>
                    {{$parent.question.status}}
                </div>
                <div class="word"> 
            	   
 	           	   <span ng-repeat="item in question.questionItems.item" ng-switch="item._type">      <span ng-switch-when="text">{{item.__cdata}}</span>
-	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.answerGiven]">{{$parent.question.givenAnswer.__cdata}}</span>
+	                     <span ng-switch-when="lozenge" ng-class="{true: 'solution', false: 'empty'}[$parent.question.status != 'NO_ANSWER']">{{$parent.question.givenAnswer.__cdata}}</span>
 	                     <span ng-if="$last" class="indicator"><img src="content/shared_assets/images/empty.png"/><img ng-show="question.status == 'ANSWER_CORRECT'" ng-class="icon" src="content/shared_assets/images/correct.png"/><img ng-show="question.status == 'ANSWER_WRONG'" ng-class="icon" src="content/shared_assets/images/incorrect.png"/></span>
 	               </span>
                </div>
@@ -45,7 +44,7 @@
       	<div class="left">
 	      	<button ng-disabled="!isComplete() || finished " ng-click="checkAnswer();">Check Answers</button>
 	      	<button ng-disabled="!someWrong() || finished " ng-click="tryAgain();">Try again</button>
-	      	<button ng-disabled="!isStarted() || finished " ng-click="reset();">Reset</button>
+	      	<button ng-disabled="!isStarted() || finished " ng-click="init();">Reset</button>
 	        <button ng-disabled="!finished" ng-click="restart();">Restart</button>
         </div>
         <div class="right">

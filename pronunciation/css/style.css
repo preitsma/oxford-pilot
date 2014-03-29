@@ -1,5 +1,5 @@
 body {
-    font-family: Verdana,Arial;
+    font-family: "Comic Sans MS",Arial,sans-serif;
     font-size: 10pt;
 }
 
@@ -154,7 +154,6 @@ ul.item li {
 }
 
 .buttons {
-   padding: 20px;
    clear:both; 
 }
 
