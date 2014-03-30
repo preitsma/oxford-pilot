@@ -39,7 +39,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
     $scope.options = [];
     $scope.maxGroups = 0;
     $scope.finished = false;
-    $scope.numerOfE
+    $scope.loaded = false;
 
     var optionsBackup;
 
@@ -87,6 +87,7 @@ var AppController = function($scope,$sce,$timeout,DataSource) { //main controlle
         optionsBackup = jQuery.extend(true, {}, $scope.options); //backup needed because drag-drop module removes option after dragging.
         $scope.title = $sce.trustAsHtml(data.compositequiz.quizzes.quiz.rubric.__cdata);
         $scope.shownCounter = 0;
+        $('#loading').fadeOut(800);
     };
 
     getCorrectOption = function(question) { //gets the right option/answer for question

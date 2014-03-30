@@ -2,6 +2,13 @@
 <html ng-app="myApp">
 
 <head>
+
+    <title>Pronunciation Game HTML5/Javascript</title>
+	
+	<meta name="viewport" content="user-scalable=no" />
+
+	<meta name="description" content="Converted Game Pronunciation">
+    <meta name="author" content="P.S.D. Reitsma, Plance">
 	
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
@@ -16,6 +23,10 @@
 </head>
 
 <body>
+
+  <div id="loading">
+    <img id="loading-image" src="css/ajax-loader.gif" alt="Loading..." />
+  </div>	
     
   <div ng-controller="AppController" class="container" id="app-container">
   	 <h1 ng-bind-html="title"></h1>
@@ -73,6 +84,12 @@
   })();
 
   </script>
+
+     <script language="javascript" type="text/javascript">
+  //    $(window).load(function() {
+  //       $('#loading').hide();
+  //    });
+  // </script>
 
 </body>
 
