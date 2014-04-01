@@ -4,25 +4,10 @@
  *  (c) 2010-2014 Plance, http://fresh-design.com.ua
  */
 
-//prevent errors in IE
-window.console = window.console || {};
-window.console.log = window.console.log || function() {};
-
-var fixedElements;
 var dialogueEntity;
 
- /*
-  PRELOADING DATA
-*/
-xmlTransform = function(data) {
-    var x2js = new X2JS();
-    var json = x2js.xml_str2json( data );
-    return json;
-};
-
-
 angular.module('orderDialogue',['ngSanitize','ngDragDrop'])
-  .factory('Dialogues', 
+  .factory('Dialogues',
     ['$http',function($http){ //factory to fetch the content
        return {
            getDialogue: function(file,callback, transform){
@@ -41,13 +26,22 @@ angular.module('orderDialogue',['ngSanitize','ngDragDrop'])
               return angular.copy(dialogueEntity);
            }
        };
-  
   }])
+  .factory('XmlToJson', function() {
+    var x2js = new X2JS();
+
+    return {
+      convert: function(data) {
+        return x2js.xml_str2json(data);
+      }
+    }
+  })
 
 /*
 GLOBAL APP CONTROLLER
 */
-.controller('GameController', function($scope, Dialogues, $filter){
+.controller('GameController',
+  ['$scope', 'Dialogues', 'XmlToJson', function($scope, Dialogues, XmlToJson){
 
     /*
       MAIN APP VARIABLES
@@ -65,27 +59,19 @@ GLOBAL APP CONTROLLER
       /*GETTING LIST OF ALL AVAILABLE OPTIONS*/
       var elements = data.compositequiz.quizzes.quiz.options.option;
       var ids = data.compositequiz.quizzes.quiz.questionGroup.question;
-      
+
       var id_list = Array();
 
       for(key in ids){
         id_list[ids[key].questionItems.item.answers.answer["_answerid"]-1] = key;
       }
-      
+
       angular.forEach(elements, function(option,index) {
          option.enabled = true;
          option.text = option["__cdata"];
          option.id = id_list[index];
-         //option.id = 
       });
-/*
-      angular.forEach(ids, function(elem,index) {
-         elem.id = elem.questionItems.item.answers.answer["_answerid"]-1;
-         elem.text = elements[elem.id]["__cdata"];
-         elem.enabled = true;
-      });
-      console.log(ids);
-*/
+
       dialogueEntity = elements;
       $scope.dialogues = angular.copy(dialogueEntity);
     }
@@ -108,15 +94,15 @@ GLOBAL APP CONTROLLER
         $scope.playFile(null,null,'click_low');
         $scope.dialogues = Dialogues.resetDialogue();
       }else {
-        Dialogues.getDialogue(SOURCE_FILE,setData,xmlTransform);
+        Dialogues.getDialogue(SOURCE_FILE,setData, XmlToJson.convert);
       }
-      
-      
+
+
       $scope.isStarted = false;
       $scope.isChecked = false;
       $scope.allAnswersShown = false;
     };
-    
+
 
     /*
       WORKING WITH SOUNDS - PRELOADING SAMPLES
@@ -147,11 +133,11 @@ GLOBAL APP CONTROLLER
 
     $scope.playSound = function(sound) {
        if ($scope.playing == false) {
-            $scope.playing = true;  
+            $scope.playing = true;
             sound.play();
        }
     }
-  
+
 
     function getFirstUncheckedDialogueIndex() {
       var result;
@@ -183,7 +169,7 @@ GLOBAL APP CONTROLLER
       console.log('swapping ' + tmp.text);
 
       $scope.dialogues[firstIndex] = angular.copy($scope.dialogues[secondIndex]);
-      
+
       console.log('with ' + $scope.dialogues[secondIndex].text);
       $scope.dialogues[secondIndex] = tmp;
     }
@@ -242,7 +228,7 @@ GLOBAL APP CONTROLLER
     };
 
     $scope.seeAllAnswers = function(){
-      $scope.playFile(null,null,'click_low');      
+      $scope.playFile(null,null,'click_low');
        angular.forEach($scope.dialogues, function(dialogue, index) {
         $scope.seeNextAnswer();
       });
@@ -261,5 +247,5 @@ GLOBAL APP CONTROLLER
     };
 
     $scope.reset();
-    
-  });
+
+  }]);

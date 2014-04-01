@@ -50,7 +50,7 @@
                 <div class="left">
                     <button class="button-primary" data-ng-click="checkAnswers()" data-ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
                     <button class="button-primary" data-ng-disabled="!isChecked || allAnswersShown" data-ng-click="tryAgain()">Try again</button>
-                    <button class="button-primary" data-ng-click="reset()" data-ng-disabled="!isStarted">Reset</button>                    
+                    <button class="button-primary" data-ng-click="reset()" data-ng-disabled="!isStarted">Reset</button>
                 </div>
                 <div class="score">
                     Score <span>{{score() || ''}}</span>/<span>{{dialogues.length}}</span>
