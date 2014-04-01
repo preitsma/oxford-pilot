@@ -127,7 +127,7 @@ GLOBAL APP CONTROLLER
 
     initSound = function(fileName) {
         return new buzz.sound(fileName.replace(/\.[^/.]+$/, ""), {
-                    formats: [ "mp3"]
+                    formats: ["ogg", "mp3"]
                   })
                   .bind("ended", function(e) { $scope.playing = false; })
                   .load();
@@ -188,44 +188,6 @@ GLOBAL APP CONTROLLER
       $scope.dialogues[secondIndex] = tmp;
     }
 
-    $scope.sortableOptions = {
-      update: function(e, ui) {        
-        $scope.isStarted = true;
-        if (ui.item.scope().dialogue.isCorrect == true) {
-          ui.item.sortable.disabled = true;
-        }
-         /* for(i in fixedElements){
-          var newElement = $scope.dialogues[i];
-          console.log($scope.dialogues);
-          oldElement = fixedElements[i];
-          var newPos = -1;
-          angular.forEach($scope.dialogues, function(dialogue, index) {
-            if(dialogue.id === oldElement.id){
-              newPos = oldElement.id;
-              console.log(i+" "+dialogue.text);
-            }
-          });
-          console.log(newPos+" "+i);
-          swapDialoguesByIndexes(newPos,i);
-        }*/
-      },
-
-     /* start: function(){
-        fixedElements = Array();
-        var i = 0;
-         angular.forEach($scope.dialogues, function(dialogue, index){
-          if(dialogue.isCorrect == true){
-            i++;
-            fixedElements[index]=dialogue;
-          };
-        });
-      },*/
-      containment: ".phrases",
-      placeholder: "placeholder",
-      items: "li:not(.unsortable)",
-      cancel: ".unsortable, .fixed"
-    };
-
     $scope.checkAnswers = function(){
       $scope.isChecked = true;
       var numcorrect = 0;
@@ -265,6 +227,7 @@ GLOBAL APP CONTROLLER
     var cnt = 0;
 
     $scope.seeNextAnswer = function(){
+      $scope.playFile(null,null,'click_low');
       $scope.isStarted = true;
       var firstUncheckedIndex = getFirstUncheckedDialogueIndex();
 
@@ -287,11 +250,13 @@ GLOBAL APP CONTROLLER
     };
 
     $scope.score = function() {
-      var curScore =  $scope.dialogues.reduce(function(mem, dialogue) {
-        var score = (dialogue.isCorrect === true) ? 1 : 0;
-        return mem + score;
-      }, 0);
-
+      var curScore = "";
+      if(typeof($scope.dialogues)!=="undefined"){
+         curScore =  $scope.dialogues.reduce(function(mem, dialogue) {
+          var score = (dialogue.isCorrect === true) ? 1 : 0;
+          return mem + score;
+        }, 0);
+      }
       return curScore;
     };
 

@@ -1,0 +1,276 @@
+/* ==========================================================================
+LESS
+========================================================================== */
+
+@white: #fff;
+@black: #000;
+
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius:    @radius;
+    border-radius:         @radius;
+
+    -moz-background-clip:    padding;
+    -webkit-background-clip: padding-box;
+    background-clip:         padding-box;
+}
+
+.gradient (@startColor, @endColor) {
+    background-color: @startColor;
+    background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+    background: -webkit-linear-gradient(top, @startColor, @endColor);
+    background: -moz-linear-gradient(top, @startColor, @endColor);
+    background: -ms-linear-gradient(top, @startColor, @endColor);
+    background: -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.box-shadow (@string) {
+    -webkit-box-shadow: @string;
+    -moz-box-shadow:    @string;
+    box-shadow:         @string;
+}
+
+.box-sizing (@type: border-box) {
+    -webkit-box-sizing: @type;
+    -moz-box-sizing:    @type;
+    box-sizing:         @type;
+}
+
+.opacity (@opacity: 0.5) {
+    -webkit-opacity:    @opacity;
+    -moz-opacity:       @opacity;
+    opacity:        @opacity;
+}
+
+.transition (@transition) {
+    -webkit-transition: @transition;
+    -moz-transition:    @transition;
+    -ms-transition:     @transition;
+    -o-transition:      @transition;
+    transition:         @transition;
+}
+
+.text-not-selectable {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.inline-block {
+    display: inline-block;
+    *display: block;
+    zoom: 1; /* IE < 8 */
+}
+
+
+/* ==========================================================================
+GENERAL STYLES
+========================================================================== */
+
+html,
+body {
+    font-family: "Comic Sans MS", Arial, sans-serif;
+    min-height: 100%;
+    background-color: @white;
+}
+
+ul,
+p {
+    margin: 0;
+}
+
+input,
+textarea,
+input:active,
+textarea:active,
+:focus,
+:visited {
+    outline: none;
+    -moz-outline-style: none;
+}
+
+a:visited {
+    outline: none;
+    -moz-outline-style: none;
+}
+
+a:focus {
+    outline: none;
+    -moz-outline-style: none;
+}
+
+::-moz-focus-inner {
+    border: 0;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    zoom: 1; /* IE < 8 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.list-inline {
+    li {
+        .inline-block;
+    }
+}
+
+.wrapper {
+    padding: 20px;
+    width: 900px;
+    min-width: 900px;
+}
+
+.title-main {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.dialogue {
+    width: 1000px;
+    height: 346px;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.phrases {
+    width: 725px;
+    height: 346px; 
+}
+
+ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.numbers,
+.phrases, 
+.score {
+    display: inline-block;
+}
+
+.list-numbers {
+    li {
+        width: 31px;
+        height: 29px;
+        margin: 0 10px 5px 0;
+        background: url(../img/bulb.png) no-repeat;
+        line-height: 29px;
+        text-align: center;
+    }
+}
+
+.list-phrases {
+    li {
+        position: relative;
+        width: 700px;
+        height: 25px;
+        line-height: 24px;
+        padding: 0 10px;
+        font-size: 14px;
+        margin-bottom: 5px;
+        border: 2px solid #ccc;
+        text-align: center;
+        .text-not-selectable;
+        .border-radius(10px);
+        .gradient(#f4f9f9, #b1b8bc);
+        font {font-size: 14px;}
+    }
+
+    li:hover {
+        .gradient(#3abcf2, #0a7eae);
+        color:white;
+        border: 2px solid #0c91c8;
+        cursor: pointer;
+    }
+
+    li.ui-sortable-helper {
+        .gradient(darken(#3abcf2, 20%), darken(#0a7eae, 20%));
+    }
+
+    .unsortable,
+    .unsortable:hover,
+    .fixed,
+    .fixed:hover {
+        border: 2px solid #ddd;
+        color: @black;
+        .gradient(#eee, #eee);
+        cursor: inherit;
+    }
+
+    i {
+        position: absolute;
+        display: block;
+        top: 2px;
+        right: -30px;
+    }
+
+    i.correct {
+        width: 22px;
+        height: 22px;
+        background-image: url(../img/tick.png);
+    }
+
+    i.incorrect {
+        width: 22px;
+        height: 20px;
+        background-image: url(../img/cross.png);
+    }
+}
+
+.buttons {
+    clear: both;
+    display: table;
+    width: 100%;
+    div {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+.button-primary {
+    width: 130px;
+    height: 26px;
+    margin-right: 15px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cacdce;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fcfdfd;
+    .border-radius(7px);
+    .gradient(#d5d7d8, #a1a9ae);
+}
+
+.button-primary:hover {
+    .gradient(#04bc04, #049904);
+    border-color: #049904;
+}
+
+.button-primary[disabled],
+.button-primary[disabled]:hover {
+    border-color: #ebedee;
+    .gradient(lighten(#d5d7d8, 16%), lighten(#a1a9ae, 16%));
+}
+
+.score {
+    width: auto;
+    font-size: 20px;
+}

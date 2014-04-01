@@ -29,33 +29,37 @@
         <script src="js/dialogue.js"></script>
 
     </head>
-    <body ng-app="orderDialogue">
-        <div class="wrapper" ng-controller="GameController">
+    <body data-ng-app="orderDialogue">
+        <div class="wrapper" data-ng-controller="GameController">
             <h1 class="title-main">Order the dialogue.</h1>
             <div class="dialogue">
                 <div class="numbers">
-                    <ul class="list-numbers" ng-model="dialogues">
-                        <li  ng-repeat="dialogue in dialogues">{{$index + 1}}</li>
+                    <ul class="list-numbers" data-ng-model="dialogues">
+                        <li  data-ng-repeat="dialogue in dialogues">{{$index + 1}}</li>
                     </ul>
                 </div>
                 <div class="phrases">
                     <ul class="list-phrases" id="the-list">
-                        <li ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
-                           <span ng-bind-html="dialogue.text"></span>
-                           <i ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
+                        <li data-ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
+                           <span data-ng-bind-html="dialogue.text"></span>
+                           <i data-ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="buttons" ng-model="dialogues">
-                <button class="button-primary" ng-click="checkAnswers()" ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
-                <button class="button-primary" ng-disabled="!isChecked || allAnswersShown" ng-click="tryAgain()">Try again</button>
-                <button class="button-primary" ng-click="reset()" ng-disabled="!isStarted">Reset</button>
+            <div class="buttons" data-ng-model="dialogues">
+                <div class="left">
+                    <button class="button-primary" data-ng-click="checkAnswers()" data-ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
+                    <button class="button-primary" data-ng-disabled="!isChecked || allAnswersShown" data-ng-click="tryAgain()">Try again</button>
+                    <button class="button-primary" data-ng-click="reset()" data-ng-disabled="!isStarted">Reset</button>                    
+                </div>
                 <div class="score">
                     Score <span>{{score() || ''}}</span>/<span>{{dialogues.length}}</span>
                 </div>
-                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeNextAnswer()">See next answer</button>
-                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeAllAnswers()">See all answers</button>
+                <div class="right">
+                    <button class="button-primary" data-ng-disabled="allAnswersShown || isChecked" data-ng-click="seeNextAnswer()">See next answer</button>
+                    <button class="button-primary" data-ng-disabled="allAnswersShown || isChecked" data-ng-click="seeAllAnswers()">See all answers</button>
+                </div>
             </div>
         </div>
     </body>
