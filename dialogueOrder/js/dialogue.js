@@ -153,14 +153,13 @@ GLOBAL APP CONTROLLER
     }
   
 
-    function getFirstIncorrectDialogueIndex() {
+    function getFirstUncheckedDialogueIndex() {
       var result;
 
       angular.forEach($scope.dialogues, function(dialogue, index) {
-        if(result == null && dialogue.id != index){
+        if(result == null && dialogue.isCorrect == null){
           result = index;
         }
-
       });
 
       return result;
@@ -263,31 +262,14 @@ GLOBAL APP CONTROLLER
     var cnt = 0;
 
     $scope.seeNextAnswer = function(){
-      // $scope.isStarted = true;
-
-      // if(cnt < $scope.dialogues.length) {
-      //   $scope.predicate = function(dialogue) {
-      //     if(dialogue.id < cnt) return dialogue.id;
-      //     else return ($scope.dialogues.length + 1);
-      //   };
-      //   cnt++;        
-      //   console.log(cnt);
-      // }
-
-      // else {
-      //   $scope.allAnswersShown = true;
-      //   console.log("end!");
-      //   console.log($scope.dialogues);        
-      // }
-      $scope.playFile(null,null,'click_low');
       $scope.isStarted = true;
-      var firstIncorrectIndex = getFirstIncorrectDialogueIndex();
+      var firstUncheckedIndex = getFirstUncheckedDialogueIndex();
 
-      if (firstIncorrectIndex >= 0) {
-        swapDialoguesByIndexes(firstIncorrectIndex, getDialogueIndexById(firstIncorrectIndex));
-        $scope.dialogues[firstIncorrectIndex].isCorrect = true;
-
+      if (firstUncheckedIndex >= 0 && firstUncheckedIndex < $scope.dialogues.length-1) {
+        swapDialoguesByIndexes(firstUncheckedIndex, getDialogueIndexById(firstUncheckedIndex));
+        $scope.dialogues[firstUncheckedIndex].isCorrect = true;
       } else {
+        $scope.dialogues[firstUncheckedIndex].isCorrect = true;
         $scope.allAnswersShown = true;
       }
     };
