@@ -21,7 +21,7 @@ xmlTransform = function(data) {
 };
 
 
-angular.module('orderDialogue',['ngSanitize', 'ui.sortable'])
+angular.module('orderDialogue',['ngSanitize','ngDragDrop'])
   .factory('Dialogues', 
     ['$http',function($http){ //factory to fetch the content
        return {
@@ -55,6 +55,8 @@ GLOBAL APP CONTROLLER
     var SOUND_PATH = "content/shared_assets/audio/";
     var SOURCE_FILE = "content/xml/content.xml";
 
+    $scope.start;
+
     /*
       GET APP DATA
     */
@@ -86,6 +88,19 @@ GLOBAL APP CONTROLLER
 */
       dialogueEntity = elements;
       $scope.dialogues = angular.copy(dialogueEntity);
+    }
+
+    $scope.onDrop = function(e, b, index) {
+        //restore the option that have been removed by d&d module
+        console.log('drop:' + index);
+        swapDialoguesByIndexes($scope.start, index);
+
+    }
+
+    $scope.onStart = function(e, b, index) {
+        $scope.start = index;
+        //restore the option that have been removed by d&d module
+        console.log('start: ' + index);
     }
 
     $scope.reset = function(){
@@ -136,8 +151,7 @@ GLOBAL APP CONTROLLER
             sound.play();
        }
     }
-
-     
+  
 
     function getFirstIncorrectDialogueIndex() {
       var result;
@@ -164,10 +178,14 @@ GLOBAL APP CONTROLLER
     }
 
     function swapDialoguesByIndexes(firstIndex, secondIndex) {
-      var tmp = $scope.dialogues[firstIndex];
+      $scope.isStarted = true;
+      var tmp = angular.copy($scope.dialogues[firstIndex]);
 
-      $scope.dialogues[firstIndex] = $scope.dialogues[secondIndex];
-      // $scope.dialogues[firstIndex].isCorrect = true;
+      console.log('swapping ' + tmp.text);
+
+      $scope.dialogues[firstIndex] = angular.copy($scope.dialogues[secondIndex]);
+      
+      console.log('with ' + $scope.dialogues[secondIndex].text);
       $scope.dialogues[secondIndex] = tmp;
     }
 
