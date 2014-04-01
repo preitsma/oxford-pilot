@@ -52,7 +52,7 @@
                 <button class="button-primary" ng-disabled="!isChecked || allAnswersShown" ng-click="tryAgain()">Try again</button>
                 <button class="button-primary" ng-click="reset()" ng-disabled="!isStarted">Reset</button>
                 <div class="score">
-                    Score <span>{{score()}}</span>/<span>{{dialogues.length}}</span>
+                    Score <span>{{score() || ''}}</span>/<span>{{dialogues.length}}</span>
                 </div>
                 <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeNextAnswer()">See next answer</button>
                 <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeAllAnswers()">See all answers</button>

@@ -300,15 +300,12 @@ GLOBAL APP CONTROLLER
     };
 
     $scope.score = function() {
-      if ($scope.dialogues) {
+      var curScore =  $scope.dialogues.reduce(function(mem, dialogue) {
+        var score = (dialogue.isCorrect === true) ? 1 : 0;
+        return mem + score;
+      }, 0);
 
-        var curScore =  $scope.dialogues.reduce(function(mem, dialogue) {
-          var score = (dialogue.isCorrect == true) ? 1 : 0;
-          return mem + score;
-        }, 0);
-        if(curScore==0)return "";
-        else return curScore;
-      }
+      return curScore;
     };
 
     $scope.reset();
