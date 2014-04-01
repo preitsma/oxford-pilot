@@ -26,12 +26,7 @@ angular.module('ui.sortable', [])
           }
 
          function findNextUnfixed(el) {
-             var nextEl = $("#the-list li:eq(" + (el.data("fixedIndex")-1) + ")");
-             if( (nextEl != 'undefined') && nextEl.data("fixedIndex")) {
-                return findNextUnfixed(nextEl);
-             } else {
-                return nextEl;
-             }
+             return $("#the-list li:eq(" + (el.data("fixedIndex")-1) + ")");
           } 
 
           var opts = {
@@ -46,7 +41,7 @@ angular.module('ui.sortable', [])
       
             change: function (e, ui) {
                  console.log(ui);
-                
+/** Peter: here also fix need to skip more  **/
                  $('#the-list').find("li.fixed").each(function () {
                      console.log("changing item" + $(this).data("fixedIndex")); 
                      $(this).detach().insertAfter(findNextUnfixed($(this)));
@@ -188,20 +183,15 @@ angular.module('ui.sortable', [])
                  !ui.item.sortable.isCanceled()) {
 
                 scope.$apply(function () {
-                  console.log(ngModel.$modelValue);
 
-                     //exclude fixed items
-                     var movableEls = jQuery.grep(ngModel.$modelValue, function(e) {return !e.isCorrect;});
-                     
-                     var fixedEls = jQuery.grep(ngModel.$modelValue, function(e) {return e.isCorrect;});  
+/**    Peter's fix to get the model right                            **/
+
 
                      console.log("ui.item.sortable.index:" + ui.item.sortable.index);
                      console.log("ui.item.sortable.dropindex" + ui.item.sortable.dropindex);
                      
                      var modelBackup = jQuery.extend(true, {}, movableEls); //backup needed because drag-drop module removes option after dragging.
      
-                     //var backup = ngModel.$modelValue[ui.item.sortable.index];
-                     //ngModel.$modelValue[ui.item.sortable.dropindex] = modelBackup[ui.item.sortable.index];
                      var placeMent = ngModel.$modelValue[ui.item.sortable.index];
                      var backup;
 
@@ -227,9 +217,7 @@ angular.module('ui.sortable', [])
                      }
 
                    }
-                     //console.log(ngModel.$modelValue);
-                     //console.log("movable");
-                     //console.log(movableEls);
+
                       
                       // ngModel.$modelValue.splice(
                       //   ui.item.sortable.dropindex, 0,
@@ -237,7 +225,6 @@ angular.module('ui.sortable', [])
 
                       
 
-                      //ngModel.$modelValue = movableEls;
 
                 });
               } else {

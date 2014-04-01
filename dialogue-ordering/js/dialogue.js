@@ -1,74 +1,163 @@
+/**
+ *  Created by Fresh Design Studio
+ *  Date: 31/3/14
+ *  (c) 2010-2014 Plance, http://fresh-design.com.ua
+ */
+
+//prevent errors in IE
+window.console = window.console || {};
+window.console.log = window.console.log || function() {};
+
 var fixedElements;
+var dialogueEntity;
 
-angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
-  .factory('Dialogues', function(){
-    var dialogue = [
-      {
-        id: 5,
-        text: "<b>Jilly:</b> On Saturday at two oâ€™clock. Could you ask him to call me back, please?",
-        enabled: true
-      },
-      {
-        id: 3,
-        text: "<b>Jilly:</b> Yes, please. Could you tell him Iâ€™m going to a show at the Space Centre. Would he like to come?",
-        enabled: true
-      },
-      {
-        id: 6,
-        text: "<b>Mrs Victory:</b> OK, Iâ€™ll tell him.",
-        enabled: true
-      },
-      {
-        id: 0,
-        text: "<b>Mrs Victory:</b> Hello.",
-        enabled: true
-      },
-      {
-        id: 7,
-        text: "<b>Jilly:</b> Thanks, Mrs Victory. Bye!",
-        enabled: true
-      },
-      {
-        id: 8,
-        text: "<b>Mrs Victory:</b> Youâ€™re welcome. Bye, Jilly!",
-        enabled: true
-      },
-      {
-        id: 2,
-        text: "<b>Mrs Victory:</b> No, Iâ€™m afraid heâ€™s not here. Heâ€™s at the park. Can I take a message?",
-        enabled: true
-      },
-      {
-        id: 1,
-        text: "<b>Jilly:</b> Oh, hello Mrs Victory. Itâ€™s Jilly here. Can I speak to William, please?",
-        enabled: true
-      },
-      {
-        id: 4,
-        text: "<b>Mrs Victory:</b> Right. When are you going?",
-        enabled: true
-      },
-      {
-        id: 9,
-        text: "<b>Mrs Victory:</b> Test",
-        enabled: true
-      }
-    ];
+ /*
+  PRELOADING DATA
+*/
+xmlTransform = function(data) {
+    var x2js = new X2JS();
+    var json = x2js.xml_str2json( data );
+    return json;
+};
 
-    return {
-      getDialogue: function(){
-        return angular.copy(dialogue);
+
+angular.module('orderDialogue',['ngSanitize','ngDragDrop'])
+  .factory('Dialogues', 
+    ['$http',function($http){ //factory to fetch the content
+       return {
+           getDialogue: function(file,callback, transform){
+                $http.get(
+                    file,
+                    {transformResponse:transform}
+                ).
+                success(function(data, status) {
+                  setData(data);
+                }).
+                error(function(data, status) {
+                    alert('Something went wrong parsing ' + file);
+                });
+           },
+           resetDialogue: function(){
+              return angular.copy(dialogueEntity);
+           }
+       };
+  
+  }])
+
+/*
+GLOBAL APP CONTROLLER
+*/
+.controller('GameController', function($scope, Dialogues, $filter){
+
+    /*
+      MAIN APP VARIABLES
+    */
+    var SOUND_PATH = "content/shared_assets/audio/";
+    var SOURCE_FILE = "content/xml/content.xml";
+
+    $scope.start;
+
+    /*
+      GET APP DATA
+    */
+
+    setData = function(data){
+      /*GETTING LIST OF ALL AVAILABLE OPTIONS*/
+      var elements = data.compositequiz.quizzes.quiz.options.option;
+      var ids = data.compositequiz.quizzes.quiz.questionGroup.question;
+      
+      var id_list = Array();
+
+      for(key in ids){
+        id_list[ids[key].questionItems.item.answers.answer["_answerid"]-1] = key;
       }
+      
+      angular.forEach(elements, function(option,index) {
+         option.enabled = true;
+         option.text = option["__cdata"];
+         option.id = id_list[index];
+         //option.id = 
+      });
+/*
+      angular.forEach(ids, function(elem,index) {
+         elem.id = elem.questionItems.item.answers.answer["_answerid"]-1;
+         elem.text = elements[elem.id]["__cdata"];
+         elem.enabled = true;
+      });
+      console.log(ids);
+*/
+      dialogueEntity = elements;
+      $scope.dialogues = angular.copy(dialogueEntity);
+    }
+
+    $scope.onDrop = function(e, b, index) {
+        //restore the option that have been removed by d&d module
+        console.log('drop:' + index);
+        swapDialoguesByIndexes($scope.start, index);
+
+    }
+
+    $scope.onStart = function(e, b, index) {
+        $scope.start = index;
+        //restore the option that have been removed by d&d module
+        console.log('start: ' + index);
+    }
+
+    $scope.reset = function(){
+      if(typeof($scope.dialogues)!=="undefined"){
+        $scope.playFile(null,null,'click_low');
+        $scope.dialogues = Dialogues.resetDialogue();
+      }else {
+        Dialogues.getDialogue(SOURCE_FILE,setData,xmlTransform);
+      }
+      
+      
+      $scope.isStarted = false;
+      $scope.isChecked = false;
+      $scope.allAnswersShown = false;
     };
-  })
+    
 
-  .controller('GameController', function($scope, Dialogues, $filter){
+    /*
+      WORKING WITH SOUNDS - PRELOADING SAMPLES
+    */
+    $scope.sounds = [];
+    $scope.playing = false;
+
+
+    initSound = function(fileName) {
+        return new buzz.sound(fileName.replace(/\.[^/.]+$/, ""), {
+                    formats: [ "mp3"]
+                  })
+                  .bind("ended", function(e) { $scope.playing = false; })
+                  .load();
+    }
+
+    cacheSound = function(fileName) {
+        $scope.sounds[fileName] = initSound(SOUND_PATH + fileName);
+    }
+
+    cacheSound('click_low');
+    cacheSound('harp');
+    cacheSound('wrong');
+
+    $scope.playFile = function(a,b,name) {
+        $scope.playSound($scope.sounds[name]);
+    }
+
+    $scope.playSound = function(sound) {
+       if ($scope.playing == false) {
+            $scope.playing = true;  
+            sound.play();
+       }
+    }
+  
 
     function getFirstIncorrectDialogueIndex() {
       var result;
 
       angular.forEach($scope.dialogues, function(dialogue, index) {
-        if(result == null && dialogue.id !== index){
+        if(result == null && dialogue.id != index){
           result = index;
         }
 
@@ -81,7 +170,7 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
       var result;
 
       angular.forEach($scope.dialogues, function(dialogue, index) {
-        if(result == null && dialogue.id === id){
+        if(result == null && dialogue.id == id){
           result = index;
         }
       });
@@ -89,7 +178,9 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
     }
 
     function swapDialoguesByIndexes(firstIndex, secondIndex) {
+      $scope.isStarted = true;
       var tmp = $scope.dialogues[firstIndex];
+
       $scope.dialogues[firstIndex] = $scope.dialogues[secondIndex];
       // $scope.dialogues[firstIndex].isCorrect = true;
       $scope.dialogues[secondIndex] = tmp;
@@ -135,12 +226,24 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
 
     $scope.checkAnswers = function(){
       $scope.isChecked = true;
+      var numcorrect = 0;
       angular.forEach($scope.dialogues, function(dialogue, index){
-        dialogue.isCorrect = (dialogue.id === index);
+        var result = (dialogue.id == index);
+        dialogue.isCorrect = result;
+        if(result)numcorrect++;
       });
+      var totalAnswers = $scope.dialogues.length;
+      /*IF NOT ALL OF THE ANSWERS ARE CORRECT - PLAY WRONG SOUND*/
+      if(numcorrect<totalAnswers){
+        $scope.playFile(null,null,'wrong');
+      }else {
+        /*OTHERWISE (NUMBER OF CORRECT = TOTAL NUMBER) - PLAY HARP*/
+        $scope.playFile(null,null,'harp');
+      }
     };
 
     $scope.tryAgain = function(){
+      $scope.playFile(null,null,'click_low');
       $scope.isChecked = false;
       $scope.isStarted = false;
       angular.forEach($scope.dialogues, function(dialogue, index){
@@ -153,12 +256,6 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
       });
     };
 
-    $scope.reset = function(){
-      $scope.dialogues = Dialogues.getDialogue();
-      $scope.isStarted = false;
-      $scope.isChecked = false;
-      $scope.allAnswersShown = false;
-    };
 
     var cnt = 0;
 
@@ -179,7 +276,7 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
       //   console.log("end!");
       //   console.log($scope.dialogues);        
       // }
-
+      $scope.playFile(null,null,'click_low');
       $scope.isStarted = true;
       var firstIncorrectIndex = getFirstIncorrectDialogueIndex();
 
@@ -193,21 +290,24 @@ angular.module('orderDialogue', ['ngSanitize', 'ui.sortable'])
     };
 
     $scope.seeAllAnswers = function(){
+      $scope.playFile(null,null,'click_low');
       $scope.predicate='id';
       $scope.allAnswersShown = true;
       $scope.isStarted = true;
     };
 
     $scope.score = function() {
-      //if ($scope.isChecked) {
+      if ($scope.dialogues) {
+
         var curScore =  $scope.dialogues.reduce(function(mem, dialogue) {
-          var score = (dialogue.isCorrect === true) ? 1 : 0;
+          var score = (dialogue.isCorrect == true) ? 1 : 0;
           return mem + score;
         }, 0);
         if(curScore==0)return "";
         else return curScore;
-      //}
+      }
     };
 
     $scope.reset();
+    
   });
