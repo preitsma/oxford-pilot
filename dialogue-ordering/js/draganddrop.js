@@ -22,7 +22,11 @@ angular.module("ngDragDrop",[])
                 scope.$watch(attrs.drag, function (newValue) {
                     dragData = newValue;
                 });
-                element.bind("dragstart", function (e) {
+                element.bind("dragstart", function (e, ui) {
+                    console.log(ui);
+                    console.log(ui.originalPosition.top);
+                    ui.originalPosition.top = e.position().top;
+                    ui.originalPosition.left = e.position().left;
                     var sendData = angular.toJson(dragData);
                     var sendChannel = attrs.dragChannel || "defaultchannel";
                     e.dataTransfer.setData("Text", sendData);

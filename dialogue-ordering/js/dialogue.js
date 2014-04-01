@@ -179,10 +179,13 @@ GLOBAL APP CONTROLLER
 
     function swapDialoguesByIndexes(firstIndex, secondIndex) {
       $scope.isStarted = true;
-      var tmp = $scope.dialogues[firstIndex];
+      var tmp = angular.copy($scope.dialogues[firstIndex]);
 
-      $scope.dialogues[firstIndex] = $scope.dialogues[secondIndex];
-      // $scope.dialogues[firstIndex].isCorrect = true;
+      console.log('swapping ' + tmp.text);
+
+      $scope.dialogues[firstIndex] = angular.copy($scope.dialogues[secondIndex]);
+      
+      console.log('with ' + $scope.dialogues[secondIndex].text);
       $scope.dialogues[secondIndex] = tmp;
     }
 

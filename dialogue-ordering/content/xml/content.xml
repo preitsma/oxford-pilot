@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<compositequiz>
+  <quizzes>
+    <quiz type="DialogueReordering202Template_1312_2010-07-27_19-31-54_rev_5601">
+      <book><![CDATA[name of book]]></book>
+      <unit><![CDATA[number of unit]]></unit>
+      <page><![CDATA[number of page]]></page>
+      <exercise><![CDATA[number of exercise]]></exercise>
+      <copyright><![CDATA[� Oxford University Press 2010]]></copyright>
+      <rubric><![CDATA[<b>Order the dialogue.</b>]]></rubric>
+      <questionGroup>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="4"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="8"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="7"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="2"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="9"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="1"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="3"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="5"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+        <question>
+          <questionItems>
+            <item score="1" type="lozenge">
+              <answers>
+                <answer answerid="6"/>
+              </answers>
+            </item>
+          </questionItems>
+        </question>
+      </questionGroup>
+      <options>
+        <option optionid="1"><![CDATA[<font size="16"><b>Jilly:</b> On Saturday at two o’clock. Could you ask him to call me back, please?]]></option>
+        <option optionid="2"><![CDATA[<font size="16"><b>Jilly:</b> Yes, please. Could you tell him I’m going to a show at the Space Centre. Would he like to come?]]></option>
+        <option optionid="3"><![CDATA[<font size="16"><b>Mrs Victory:</b> OK, I’ll tell him.]]></option>
+        <option optionid="4"><![CDATA[<font size="16"><b>Mrs Victory:</b> Hello.]]></option>
+        <option optionid="5"><![CDATA[<font size="16"><b>Jilly:</b> Thanks, Mrs Victory. Bye!]]></option>
+        <option optionid="6"><![CDATA[<font size="16"><b>Mrs Victory:</b> You’re welcome. Bye, Jilly!]]></option>
+        <option optionid="7"><![CDATA[<font size="16"><b>Mrs Victory:</b> No, I’m afraid he’s not here. He’s at the park. Can I take a message?]]></option>
+        <option optionid="8"><![CDATA[<font size="16"><b>Jilly:</b> Oh, hello Mrs Victory. It’s Jilly here. Can I speak to William, please?]]></option>
+        <option optionid="9"><![CDATA[<font size="16"><b>Mrs Victory:</b> Right. When are you going?]]></option>
+      </options>
+    </quiz>
+  </quizzes>
+</compositequiz>

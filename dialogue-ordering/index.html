@@ -23,7 +23,7 @@
         <script src="js/angular.min.js"></script>
         <script src="js/xml2json.js"></script>
         <script src="js/buzz.min.js"></script>
-        <script src="js/angular-dragdrop.min.js"></script>
+        <script src="js/angular-dragdrop.js"></script>
         <script src="js/jquery.ui.touch-punch.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.js"></script>
         <script src="js/dialogue.js"></script>
@@ -40,8 +40,8 @@
                 </div>
                 <div class="phrases">
                     <ul class="list-phrases" id="the-list">
-                        <li ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})'}" data-jqyoui-options="{helper:'clone', axis: 'y'}" ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" >
-                            <span>{{dialogue.text}}{{dialogue.isCorrect}}</span>
+                        <li ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
+                           <span ng-bind-html="dialogue.text"></span>
                            <i ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
                         </li>
                     </ul>
