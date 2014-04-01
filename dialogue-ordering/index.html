@@ -40,7 +40,7 @@
                 </div>
                 <div class="phrases">
                     <ul class="list-phrases" id="the-list">
-                        <li ng-repeat="dialogue in dialogues" data-drag="true" jqyoui-draggable="{onStart:'onStart({{$index}})'}" data-jqyoui-options="{helper:'clone', axis: 'y'}" ng-model="dialogue" data-drop="true" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" >
+                        <li ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})'}" data-jqyoui-options="{helper:'clone', axis: 'y'}" ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" >
                             <span>{{dialogue.text}}{{dialogue.isCorrect}}</span>
                            <i ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
                         </li>

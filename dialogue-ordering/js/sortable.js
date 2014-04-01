@@ -190,7 +190,7 @@ angular.module('ui.sortable', [])
                      console.log("ui.item.sortable.index:" + ui.item.sortable.index);
                      console.log("ui.item.sortable.dropindex" + ui.item.sortable.dropindex);
                      
-                     var modelBackup = jQuery.extend(true, {}, movableEls); //backup needed because drag-drop module removes option after dragging.
+ //                    var modelBackup = jQuery.extend(true, {}, movableEls); //backup needed because drag-drop module removes option after dragging.
      
                      var placeMent = ngModel.$modelValue[ui.item.sortable.index];
                      var backup;
