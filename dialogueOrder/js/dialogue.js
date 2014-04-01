@@ -235,10 +235,13 @@ GLOBAL APP CONTROLLER
         if(result)numcorrect++;
       });
       var totalAnswers = $scope.dialogues.length;
+      if(numcorrect == totalAnswers) $scope.allAnswersShown = true;
+
       /*IF NOT ALL OF THE ANSWERS ARE CORRECT - PLAY WRONG SOUND*/
       if(numcorrect<totalAnswers){
         $scope.playFile(null,null,'wrong');
-      }else {
+      }
+      else {
         /*OTHERWISE (NUMBER OF CORRECT = TOTAL NUMBER) - PLAY HARP*/
         $scope.playFile(null,null,'harp');
       }
@@ -268,16 +271,18 @@ GLOBAL APP CONTROLLER
       if (firstUncheckedIndex >= 0 && firstUncheckedIndex < $scope.dialogues.length-1) {
         swapDialoguesByIndexes(firstUncheckedIndex, getDialogueIndexById(firstUncheckedIndex));
         $scope.dialogues[firstUncheckedIndex].isCorrect = true;
-      } else {
+      }
+      else {
         $scope.dialogues[firstUncheckedIndex].isCorrect = true;
         $scope.allAnswersShown = true;
       }
     };
 
     $scope.seeAllAnswers = function(){
-      $scope.playFile(null,null,'click_low');
-      $scope.predicate='id';
-      $scope.allAnswersShown = true;
+      $scope.playFile(null,null,'click_low');      
+       angular.forEach($scope.dialogues, function(dialogue, index) {
+        $scope.seeNextAnswer();
+      });
       $scope.isStarted = true;
     };
 
