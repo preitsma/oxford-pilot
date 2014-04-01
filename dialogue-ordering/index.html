@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Dialogue ordering</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/xml2json.js"></script>
+        <script src="js/buzz.min.js"></script>
+        <script src="js/angular-dragdrop.min.js"></script>
+        <script src="js/jquery.ui.touch-punch.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.js"></script>
+        <script src="js/module.js"></script>
+
+    </head>
+    <body ng-app="orderDialogue">
+        <div class="wrapper" ng-controller="GameController">
+            <h1 class="title-main">Order the dialogue.</h1>
+            <div class="dialogue">
+                <div class="numbers">
+                    <ul class="list-numbers" ng-model="dialogues">
+                        <li  ng-repeat="dialogue in dialogues">{{$index + 1}}</li>
+                    </ul>
+                </div>
+                <div class="phrases">
+                    <ul class="list-phrases" id="the-list">
+                        <li ng-repeat="dialogue in dialogues" ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}">
+                            <span ng-bind-html="dialogue.text"></span>
+                           <i ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="buttons" ng-model="dialogues">
+                <button class="button-primary" ng-click="checkAnswers()" ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
+                <button class="button-primary" ng-disabled="!isChecked || allAnswersShown" ng-click="tryAgain()">Try again</button>
+                <button class="button-primary" ng-click="reset()" ng-disabled="!isStarted">Reset</button>
+                <div class="score">
+                    Score <span>{{score()}}</span>/<span>{{dialogues.length}}</span>
+                </div>
+                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeNextAnswer()">See next answer</button>
+                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeAllAnswers()">See all answers</button>
+            </div>
+        </div>
+    </body>
+</html>

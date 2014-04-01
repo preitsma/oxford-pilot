@@ -27,6 +27,16 @@
   <div id="loading">
     <img id="loading-image" src="css/ajax-loader.gif" alt="Loading..." />
   </div>	
+
+  <style type="text/css">
+/* this would probably be in a CSS file */
+#browserWarning { display:none; }
+</style>
+<!--[if IE 6]>
+<style type="text/css">
+#browserWarning { display:; }
+</style>
+<![endif]-->
     
   <div ng-controller="AppController" class="container" id="app-container">
   	 <h1 ng-bind-html="title"></h1>
