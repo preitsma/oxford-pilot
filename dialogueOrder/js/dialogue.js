@@ -83,7 +83,7 @@ GLOBAL APP CONTROLLER
 
     $scope.onDrop = function(e, b, index) {
         //restore the option that have been removed by d&d module
-        swapDialoguesByIndexes($scope.start, index);
+        insertItem($scope.start, index);
     }
 
     $scope.onStart = function(e, b, index) {
@@ -139,6 +139,33 @@ GLOBAL APP CONTROLLER
     }
 
 
+    function insertItem(firstIndex, secondIndex) {
+      
+      $scope.isStarted = true; 
+
+      var placeMent = angular.copy($scope.dialogues[firstIndex]);
+      var backup;
+      if (secondIndex < firstIndex) {
+            for ( var i = secondIndex ; i <= firstIndex; i++) {
+                if ( !$scope.dialogues[i].isCorrect ) {
+                    backup = angular.copy($scope.dialogues[i]);
+
+                    $scope.dialogues[i] = placeMent;
+                    placeMent = backup;
+                }
+            }
+      } else {
+            for ( var i = secondIndex ; i >= firstIndex; i--) {
+                //console.log(i);
+                if ( !$scope.dialogues[i].isCorrect ) {
+                  backup = angular.copy($scope.dialogues[i]);
+                  $scope.dialogues[i] = placeMent;
+                  placeMent = backup;
+                }
+            }
+      }   
+    }
+    
     function getFirstUncheckedDialogueIndex() {
       var result;
 
