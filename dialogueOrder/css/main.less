@@ -72,6 +72,7 @@ body {
     font-family: "Comic Sans MS", Arial, sans-serif;
     min-height: 100%;
     background-color: @white;
+    -webkit-transform: translate3d(0, 0, 0);
 }
 
 ul,
@@ -189,6 +190,7 @@ ul {
         .text-not-selectable;
         .border-radius(10px);
         .gradient(#f4f9f9, #b1b8bc);
+        -webkit-transform: translate3d(0, 0, 0);
         font {font-size: 14px;}
     }
 
@@ -289,4 +291,28 @@ ul {
 #loading-image {
   margin: 200px;
   z-index: 100;
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    .list-phrases {
+        li:hover {
+            border: 2px solid #ccc;
+            color: @black;
+            .gradient(#f4f9f9, #b1b8bc);
+        }
+    }
+
+    .button-primary {
+        height: 46px;
+    }
+}
+
+@media screen and (min-device-width : 320px) and (max-device-width : 800px) {
+    .list-phrases {
+        li:hover {
+            border: 2px solid #ccc;
+            color: @black;
+            .gradient(#f4f9f9, #b1b8bc);
+        }
+    }
 }
