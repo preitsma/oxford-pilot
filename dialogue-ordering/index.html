@@ -8,55 +8,75 @@
 <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Dialogue ordering</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dialogue Ordering Game HTML5/Javascript</title>
+    <meta name="description" content="">
+    <meta name = "viewport" content = "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width /">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/jquery-ui.min.js"></script>
-        <script src="js/angular.min.js"></script>
-        <script src="js/xml2json.js"></script>
-        <script src="js/buzz.min.js"></script>
-        <script src="js/angular-dragdrop.js"></script>
-        <script src="js/jquery.ui.touch-punch.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.js"></script>
-        <script src="js/dialogue.js"></script>
-
-    </head>
-    <body ng-app="orderDialogue">
-        <div class="wrapper" ng-controller="GameController">
-            <h1 class="title-main">Order the dialogue.</h1>
-            <div class="dialogue">
-                <div class="numbers">
-                    <ul class="list-numbers" ng-model="dialogues">
-                        <li  ng-repeat="dialogue in dialogues">{{$index + 1}}</li>
-                    </ul>
-                </div>
-                <div class="phrases">
-                    <ul class="list-phrases" id="the-list">
-                        <li ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
-                           <span ng-bind-html="dialogue.text"></span>
-                           <i ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
-                        </li>
-                    </ul>
-                </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.js"></script>
+    <script src="js/xml2json.js"></script>
+    <script src="js/buzz.min.js"></script>
+    <script src="js/angular-dragdrop.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/dialogue.js"></script>
+</head>
+<body data-ng-app="orderDialogue">
+    <div id="loading">
+        <img id="loading-image" alt="Loading..." src="img/ajax-loader.gif">
+    </div>
+    <div class="wrapper" data-ng-controller="GameController">
+        <h1 class="title-main" data-ng-model="dialogue" data-ng-bind-html="title">{{title}}</h1>
+        <div class="dialogue">
+            <div class="numbers">
+                <ul class="list-numbers" data-ng-model="dialogues">
+                    <li  data-ng-repeat="dialogue in dialogues">{{$index + 1}}</li>
+                </ul>
             </div>
-            <div class="buttons" ng-model="dialogues">
-                <button class="button-primary" ng-click="checkAnswers()" ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
-                <button class="button-primary" ng-disabled="!isChecked || allAnswersShown" ng-click="tryAgain()">Try again</button>
-                <button class="button-primary" ng-click="reset()" ng-disabled="!isStarted">Reset</button>
-                <div class="score">
-                    Score <span>{{score()}}</span>/<span>{{dialogues.length}}</span>
-                </div>
-                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeNextAnswer()">See next answer</button>
-                <button class="button-primary" ng-disabled="allAnswersShown" ng-click="seeAllAnswers()">See all answers</button>
+            <div class="phrases">
+                <ul class="list-phrases" id="the-list">
+                    <li data-ng-repeat="dialogue in dialogues" data-ng-model="dialogue" data-drag="dialogue.isCorrect == null || dialogue.isChecked == false" data-jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null}">
+                       <span class="phraze" data-ng-bind-html="dialogue.text"></span>
+                       <i data-ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
+                    </li>
+                </ul>
             </div>
         </div>
-    </body>
+        <div class="buttons" data-ng-model="dialogues">
+            <div class="left">
+                <button class="button-primary" data-ng-click="checkAnswers()" data-ng-disabled="!isStarted || isChecked || allAnswersShown">Check answers</button>
+                <button class="button-primary" data-ng-disabled="!isChecked || allAnswersShown" data-ng-click="tryAgain()">Try again</button>
+                <button class="button-primary" data-ng-click="reset()" data-ng-disabled="!isStarted">Reset</button>
+            </div>
+            <div class="score">
+                Score <span>{{score() || ''}}</span>/<span>{{dialogues.length}}</span>
+            </div>
+            <div class="right">
+                <button class="button-primary" data-ng-disabled="allAnswersShown || isChecked" data-ng-click="seeNextAnswer()">See next answer</button>
+                <button class="button-primary" data-ng-disabled="allAnswersShown || isChecked" data-ng-click="seeAllAnswers()">See all answers</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-342425-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+   </script>
+</body>
 </html>
