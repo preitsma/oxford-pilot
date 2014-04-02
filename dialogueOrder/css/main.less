@@ -164,13 +164,14 @@ ul {
 .phrases, 
 .score {
     display: inline-block;
+    vertical-align: top;
 }
 
 .list-numbers {
     li {
         width: 31px;
         height: 29px;
-        margin: 0 10px 5px 0;
+        margin: 0 10px 6px 0;
         background: url(../img/bulb.png) no-repeat;
         line-height: 29px;
         text-align: center;
@@ -180,39 +181,44 @@ ul {
 .list-phrases {
     li {
         position: relative;
-        width: 700px;
-        height: 25px;
-        line-height: 24px;
-        padding: 0 10px;
-        font-size: 14px;
-        margin-bottom: 5px;
-        border: 2px solid #ccc;
-        .text-not-selectable;
-        .border-radius(10px);
-        .gradient(#f4f9f9, #b1b8bc);
-        -webkit-transform: translate3d(0, 0, 0);
+        height: 35px;
         font {font-size: 14px;}
+        -webkit-transform: translate3d(0, 0, 0);
+        span {
+            .inline-block;
+            width: 700px;
+            height: 25px;
+            line-height: 24px;
+            padding: 0 10px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            border: 2px solid #ccc;
+            vertical-align: top;
+            .text-not-selectable;
+            .border-radius(10px);
+            .gradient(#f4f9f9, #b1b8bc);
+        }
     }
 
     li:hover {
-        .gradient(#3abcf2, #0a7eae);
-        color:white;
-        border: 2px solid #0c91c8;
-        cursor: pointer;
-    }
-
-    li.ui-sortable-helper {
-        .gradient(darken(#3abcf2, 20%), darken(#0a7eae, 20%));
+        span {
+            .gradient(#3abcf2, #0a7eae);
+            color:white;
+            border: 2px solid #0c91c8;
+            cursor: pointer;
+        }
     }
 
     .unsortable,
     .unsortable:hover,
     .fixed,
     .fixed:hover {
-        border: 2px solid #ddd;
-        color: @black;
-        .gradient(#eee, #eee);
-        cursor: inherit;
+        span {
+            border: 2px solid #ddd;
+            color: @black;
+            .gradient(#eee, #eee);
+            cursor: inherit;
+        }
     }
 
     i {
