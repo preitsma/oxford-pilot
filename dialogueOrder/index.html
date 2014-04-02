@@ -30,7 +30,7 @@
     </head>
     <body data-ng-app="orderDialogue">
         <div class="wrapper" data-ng-controller="GameController">
-            <h1 class="title-main">Order the dialogue.</h1>
+            <h1 class="title-main" data-ng-model="dialogue" data-ng-bind-html="title">{{title}}</h1>
             <div class="dialogue">
                 <div class="numbers">
                     <ul class="list-numbers" data-ng-model="dialogues">

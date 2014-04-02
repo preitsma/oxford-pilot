@@ -59,8 +59,11 @@ GLOBAL APP CONTROLLER
       /*GETTING LIST OF ALL AVAILABLE OPTIONS*/
       var elements = data.compositequiz.quizzes.quiz.options.option;
       var ids = data.compositequiz.quizzes.quiz.questionGroup.question;
+      var title = data.compositequiz.quizzes.quiz.rubric;
 
       var id_list = Array();
+
+
 
       for(key in ids){
         id_list[ids[key].questionItems.item.answers.answer["_answerid"]-1] = key;
@@ -74,6 +77,8 @@ GLOBAL APP CONTROLLER
 
       dialogueEntity = elements;
       $scope.dialogues = angular.copy(dialogueEntity);
+
+      $scope.title = title["__cdata"];
     }
 
     $scope.onDrop = function(e, b, index) {
