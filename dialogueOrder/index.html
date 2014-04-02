@@ -13,7 +13,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Dialogue ordering</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
@@ -42,7 +43,7 @@
                 </div>
                 <div class="phrases">
                     <ul class="list-phrases" id="the-list">
-                        <li data-ng-repeat="dialogue in dialogues" data-ng-model="dialogue" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}">
+                        <li data-ng-repeat="dialogue in dialogues" data-ng-model="dialogue" data-drag="dialogue.isCorrect == null || dialogue.isChecked == false" data-jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null}">
                            <span class="phraze" data-ng-bind-html="dialogue.text"></span>
                            <i data-ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
                         </li>

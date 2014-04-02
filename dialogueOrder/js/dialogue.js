@@ -140,8 +140,8 @@ GLOBAL APP CONTROLLER
 
 
     function insertItem(firstIndex, secondIndex) {
-      
-      $scope.isStarted = true; 
+
+      $scope.isStarted = true;
 
       var placeMent = angular.copy($scope.dialogues[firstIndex]);
       var backup;
@@ -163,9 +163,9 @@ GLOBAL APP CONTROLLER
                   placeMent = backup;
                 }
             }
-      }   
+      }
     }
-    
+
     function getFirstUncheckedDialogueIndex() {
       var result;
 
@@ -190,7 +190,7 @@ GLOBAL APP CONTROLLER
     }
 
     function swapDialoguesByIndexes(firstIndex, secondIndex) {
-      $scope.isStarted = true; 
+      $scope.isStarted = true;
 
       var tmp = angular.copy($scope.dialogues[firstIndex]);
       $scope.dialogues[firstIndex] = angular.copy($scope.dialogues[secondIndex]);
@@ -204,18 +204,19 @@ GLOBAL APP CONTROLLER
         var result = (dialogue.id == index);
         dialogue.isCorrect = result;
         if(result) numcorrect++;
+        if(result == false) result = null;
       });
 
       var totalAnswers = $scope.dialogues.length;
       if(numcorrect == totalAnswers) $scope.allAnswersShown = true;
 
       /*IF NOT ALL OF THE ANSWERS ARE CORRECT - PLAY WRONG SOUND*/
-      if(numcorrect<totalAnswers){
-        $scope.playFile(null,null,'wrong');
+      if(numcorrect < totalAnswers){
+        $scope.playFile(null, null, 'wrong');
       }
       else {
         /*OTHERWISE (NUMBER OF CORRECT = TOTAL NUMBER) - PLAY HARP*/
-        $scope.playFile(null,null,'harp');
+        $scope.playFile(null, null, 'harp');
       }
     };
 
