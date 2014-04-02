@@ -29,6 +29,9 @@
         <script src="js/dialogue.js"></script>
     </head>
     <body data-ng-app="orderDialogue">
+        <div id="loading">
+            <img id="loading-image" alt="Loading..." src="img/ajax-loader.gif">
+        </div>
         <div class="wrapper" data-ng-controller="GameController">
             <h1 class="title-main" data-ng-model="dialogue" data-ng-bind-html="title">{{title}}</h1>
             <div class="dialogue">
@@ -39,7 +42,7 @@
                 </div>
                 <div class="phrases">
                     <ul class="list-phrases" id="the-list">
-                        <li data-ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
+                        <li data-ng-repeat="dialogue in dialogues" data-drag="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-draggable="{onStart:'onStart({{$index}})',placeholder: 'keep'}" data-jqyoui-options="{axis: 'y',revert: 'invalid'}" data-ng-model="dialogue" data-drop="dialogue.isCorrect == null || dialogue.isCorrect == false" data-jqyoui-droppable="{onDrop:'onDrop({{$index}})'}" data-ng-class="{'unsortable': dialogue.isCorrect === true, 'fixed': dialogue.isCorrect != null,}" >
                            <span data-ng-bind-html="dialogue.text"></span>
                            <i data-ng-class="{'correct': dialogue.isCorrect === true, 'incorrect': dialogue.isCorrect === false}"></i>
                         </li>

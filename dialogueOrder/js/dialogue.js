@@ -63,8 +63,6 @@ GLOBAL APP CONTROLLER
 
       var id_list = Array();
 
-
-
       for(key in ids){
         id_list[ids[key].questionItems.item.answers.answer["_answerid"]-1] = key;
       }
@@ -79,13 +77,14 @@ GLOBAL APP CONTROLLER
       $scope.dialogues = angular.copy(dialogueEntity);
 
       $scope.title = title["__cdata"];
+
+      $('#loading').fadeOut(800);
     }
 
     $scope.onDrop = function(e, b, index) {
         //restore the option that have been removed by d&d module
         console.log('drop:' + index);
         swapDialoguesByIndexes($scope.start, index);
-
     }
 
     $scope.onStart = function(e, b, index) {
