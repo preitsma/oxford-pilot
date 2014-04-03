@@ -21,7 +21,9 @@ body {
   font-family: "Comic Sans MS", Arial, sans-serif;
   background-color: #ffffff;
   -webkit-transform: translate3d(0, 0, 0);
+
 }
+
 ul,
 p {
   margin: 0;
@@ -83,7 +85,6 @@ a:focus {
   font-size: 24px;
 }
 .dialogue {
-  width: 1000px;
   height: 346px;
   padding-left: 30px;
   margin-bottom: 20px;
